@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router";
-import NavBar from "./components/NavBar/NavBar";
+import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
@@ -24,7 +24,7 @@ export default function App() {
   return (
     <>
       <RouteEffects />
-      <NavBar />
+      <Navbar />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />

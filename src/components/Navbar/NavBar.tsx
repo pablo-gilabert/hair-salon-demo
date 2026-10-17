@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router";
-import styles from "./NavBar.module.css";
+import styles from "./Navbar.module.css";
 
 const navigation = [
   { label: "Inicio", path: "/" },
@@ -8,7 +8,7 @@ const navigation = [
   { label: "Contacto", path: "/contacto" },
 ];
 
-export default function NavBar() {
+export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
