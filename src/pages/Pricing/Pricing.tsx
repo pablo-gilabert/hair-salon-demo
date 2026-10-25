@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, useLocation } from "react-router";
 
 import { useDisplay } from "../../context/DisplayContext";
-import { FormatPrice, ServiceCategories } from "../../data/Services";
+import { FormatPrice, ServiceCategories } from "../../data/services";
 import styles from "./Pricing.module.css";
 
 // The services page is generated from one bilingual catalog with illustrative ARS prices.

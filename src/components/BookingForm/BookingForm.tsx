@@ -2,7 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useSearchParams } from "react-router";
 
 import { useDisplay } from "../../context/DisplayContext";
-import { ServiceCategories } from "../../data/Services";
+import { ServiceCategories } from "../../data/services";
 import styles from "./BookingForm.module.css";
 
 type FormState = {

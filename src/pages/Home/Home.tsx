@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 
 import { useDisplay } from "../../context/DisplayContext";
-import { ServiceCategories } from "../../data/Services";
+import { ServiceCategories } from "../../data/services";
 import styles from "./Home.module.css";
 
 // The landing page preserves the original editorial design and image slideshow.
