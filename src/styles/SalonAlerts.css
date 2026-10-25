@@ -1,0 +1,194 @@
+/* SweetAlert2 inherits the same dark/light tokens as the public and admin views. */
+.swal2-container {
+    z-index: 3000;
+    font-family: var(--sans);
+}
+
+.salonAlertPopup {
+    max-height: min(92vh, 900px);
+    overflow-y: auto;
+    padding: clamp(18px, 3vw, 30px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    background: var(--surface-background);
+    color: var(--text-primary);
+    box-shadow: 0 25px 85px rgb(0 0 0 / 30%);
+}
+
+.salonAlertPopup .swal2-title {
+    margin: 0 0 16px;
+    padding: 0;
+    color: var(--text-primary);
+    font-family: var(--serif);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 600;
+}
+
+.salonAlertPopup .swal2-html-container {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.salonAlertPopup .swal2-validation-message {
+    background: var(--card-background);
+    color: #d37366;
+    font-size: 12px;
+}
+
+.salonAlertPopup .swal2-close {
+    color: var(--text-secondary);
+}
+
+.salonAlertPopup .swal2-close:hover {
+    color: var(--gold);
+}
+
+.salonAlertPopup .swal2-actions {
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.salonAlertConfirm,
+.salonAlertCancel,
+.salonAlertDanger {
+    min-height: 42px;
+    padding: 11px 19px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.salonAlertConfirm {
+    border-color: var(--sand);
+    background: var(--sand);
+    color: #10191b;
+}
+
+.salonAlertCancel {
+    background: var(--card-background);
+    color: var(--text-primary);
+}
+
+.salonAlertDanger {
+    border-color: #aa524c;
+    background: #ae564e;
+    color: #ffffff;
+}
+
+.salonAlertGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+    text-align: left;
+}
+
+.salonAlertField {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    min-width: 0;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.salonAlertField input,
+.salonAlertField select,
+.salonAlertField textarea {
+    width: 100%;
+    min-height: 43px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    outline: none;
+    background: var(--background);
+    color: var(--text-primary);
+    color-scheme: inherit;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.salonAlertField textarea {
+    resize: vertical;
+}
+
+.salonAlertField input:focus,
+.salonAlertField select:focus,
+.salonAlertField textarea:focus {
+    border-color: var(--sand);
+    box-shadow: 0 0 0 3px rgb(181 142 113 / 19%);
+}
+
+.salonAlertWide {
+    grid-column: 1 / -1;
+}
+
+.salonAlertCheckbox {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.salonAlertCheckbox input {
+    width: 19px;
+    min-height: 19px;
+    accent-color: var(--sand);
+}
+
+.salonAlertDetails {
+    display: grid;
+    gap: 9px;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+.salonAlertDetails p {
+    margin: 0;
+}
+
+.salonAlertTools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.salonAlertTools button {
+    flex: 1 1 135px;
+    min-height: 39px;
+    padding: 9px 11px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--card-background);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.salonAlertTools button:last-child {
+    border-color: #aa524c;
+    color: #d4766c;
+}
+
+@media (max-width: 560px) {
+    .salonAlertGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .salonAlertField {
+        grid-column: 1 / -1;
+    }
+
+    .salonAlertPopup {
+        width: calc(100vw - 20px) !important;
+    }
+}

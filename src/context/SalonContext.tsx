@@ -19,6 +19,7 @@ type SalonContextValue = {
     book: (details: BookingRequest) => BookingResult;
     updateBooking: (id: string, patch: Partial<Pick<SalonBooking, "depositPaid" | "status" | "customerName" | "customerPhone" | "note">>) => void;
     addBooking: (details: BookingRequest, paid: boolean) => BookingResult;
+    editBooking: (id: string, details: BookingRequest, paid: boolean) => BookingResult;
     deleteBooking: (id: string) => void;
     setHours: (day: Weekday, hours: OpeningHours) => void;
     upsertService: (categoryId: string, service: Service) => void;
@@ -98,6 +99,32 @@ export function SalonProvider({ children }: { children: ReactNode }) {
         return { ok: true };
     };
 
+    // Admin edits re-check overlap and duration before updating a confirmed appointment.
+    const editBooking = (id: string, details: BookingRequest, depositPaid: boolean): BookingResult => {
+        const existing = database.bookings.find((booking) => booking.id === id);
+        const service = findService(database, details.serviceId);
+        if (!existing || !service || !details.customerName.trim() || !details.customerPhone.trim()) return { ok: false, reason: "invalid" };
+        const scheduleChanged = details.date !== existing.date || details.time !== existing.time
+            || details.serviceId !== existing.serviceId || service.duration !== existing.duration;
+        if (existing.status === "confirmed" && scheduleChanged && !isAvailable(database, details.date, details.time, service.duration, id)) {
+            return { ok: false, reason: "unavailable" };
+        }
+        setDatabase((previous) => ({
+            ...previous,
+            bookings: previous.bookings.map((booking) => booking.id === id ? {
+                ...booking,
+                ...details,
+                customerName: details.customerName.trim(),
+                customerPhone: details.customerPhone.trim(),
+                customerEmail: details.customerEmail.trim(),
+                note: details.note.trim(),
+                duration: service.duration,
+                depositPaid,
+            } : booking),
+        }));
+        return { ok: true };
+    };
+
     const updateBooking = (id: string, patch: Partial<Pick<SalonBooking, "depositPaid" | "status" | "customerName" | "customerPhone" | "note">>) => {
         setDatabase((previous) => ({ ...previous, bookings: previous.bookings.map((booking) => booking.id === id ? { ...booking, ...patch } : booking) }));
     };
@@ -144,7 +171,7 @@ export function SalonProvider({ children }: { children: ReactNode }) {
     const value = useMemo<SalonContextValue>(() => ({
         database, loggedIn, login, logout,
         book: (details) => addBooking(details, false),
-        addBooking, updateBooking, deleteBooking, setHours, upsertService, deleteService, resetDemo,
+        addBooking, editBooking, updateBooking, deleteBooking, setHours, upsertService, deleteService, resetDemo,
     // Local event handlers are recreated intentionally; the context is re-rendered on changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }), [database, loggedIn]);

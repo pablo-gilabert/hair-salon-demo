@@ -89,6 +89,43 @@
     width: 100%;
 }
 
+/* Administration is visible on desktop, with a direct-access icon on smaller widths. */
+.adminLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 13px;
+    border: 1px solid var(--nav-text);
+    color: var(--nav-text);
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+}
+
+.adminLink:hover {
+    background: var(--nav-text);
+    color: var(--hero-background);
+}
+
+.quickAccess {
+    display: none;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--control-border);
+    background: var(--control-background);
+    color: var(--control-text);
+}
+
+.quickAccess:hover {
+    background: var(--control-hover);
+}
+
 /* Preference buttons never shrink or push Spanish labels outside the viewport. */
 .actions {
     position: relative;
@@ -106,7 +143,7 @@
 }
 
 /* On intermediate widths, the full menu becomes a dropdown before links collide. */
-@media (max-width: 1180px) {
+@media (max-width: 1330px) {
     .header {
         padding: 22px var(--page-pad);
     }
@@ -119,6 +156,10 @@
 
     .actions {
         margin-left: auto;
+    }
+
+    .quickAccess {
+        display: inline-flex;
     }
 
     .menuButton {
@@ -198,6 +239,23 @@
         display: none;
     }
 
+    .adminLink {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: 16px 0;
+        border: 0;
+        border-bottom: 1px solid var(--nav-menu-border);
+        background: transparent;
+        color: var(--nav-text);
+        font-size: 14px;
+    }
+
+    .adminLink:hover {
+        background: transparent;
+        color: var(--nav-hover);
+    }
+
     .mobileBooking {
         display: flex;
         align-items: center;
@@ -242,6 +300,11 @@
         gap: 3px;
     }
 
+    .quickAccess {
+        width: 30px;
+        height: 34px;
+    }
+
     .menuButton {
         width: 32px;
         height: 34px;
@@ -249,5 +312,103 @@
 
     .menuButton span {
         width: 21px;
+    }
+}
+
+/* The compact wordmark leaves room for sign-in and display switches at phone sizes. */
+@media (max-width: 395px) {
+    .logoWord {
+        display: none;
+    }
+
+    .logo {
+        font-size: 9px;
+        letter-spacing: 0.04em;
+    }
+
+    .inner {
+        gap: 3px;
+    }
+
+    .actions {
+        gap: 3px;
+    }
+}
+
+@media (max-width: 350px) {
+    .logo {
+        font-size: 8px;
+        letter-spacing: 0;
+    }
+}
+
+/* On desktop, keep the ENTIRE homepage navigation inside the right hero panel.
+   The photo/panel boundary is 58.5% in Home.module.css. */
+@media (min-width: 1331px) {
+    .homeHeader {
+        left: 58.5%;
+        padding: clamp(26px, 2.7vw, 45px) clamp(28px, 4.7vw, 80px);
+    }
+
+    .homeHeader .inner {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        column-gap: 12px;
+        row-gap: 18px;
+    }
+
+    .homeHeader .logo {
+        grid-column: 1;
+        grid-row: 1;
+        color: var(--nav-text);
+        font-size: clamp(10px, 0.88vw, 15px);
+        letter-spacing: 0.1em;
+        text-shadow: none;
+    }
+
+    .homeHeader .actions {
+        grid-column: 2;
+        grid-row: 1;
+        order: initial;
+    }
+
+    .homeHeader .navigation {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-content: space-between;
+        gap: clamp(7px, 0.95vw, 15px);
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .homeHeader .navLink {
+        font-size: clamp(9px, 0.72vw, 12px);
+        letter-spacing: 0.09em;
+    }
+
+    .homeHeader .adminLink {
+        gap: 6px;
+        padding: 10px 11px;
+        font-size: clamp(9px, 0.7vw, 11px);
+        letter-spacing: 0.04em;
+    }
+}
+
+/* At smaller desktop and mobile sizes, a unified themed header keeps every
+   control on the same surface; the dropdown remains fully functional. */
+@media (max-width: 1330px) {
+    .homeHeader {
+        background: var(--nav-menu-background);
+        box-shadow: 0 8px 26px rgb(0 0 0 / 9%);
+    }
+
+    .homeHeader .logo {
+        color: var(--nav-text);
+        text-shadow: none;
+    }
+
+    .homeHeader .menuButton span {
+        background: var(--nav-text);
     }
 }

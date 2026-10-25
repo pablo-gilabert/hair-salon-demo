@@ -2,7 +2,7 @@
 
 A polished, responsive **hair salon and barbershop website with an integrated administration experience**. This portfolio project pairs a customer-facing service catalog and appointment form with a fully interactive, locally persisted admin dashboard.
 
-Built with **React, TypeScript, Vite, React Router, and CSS Modules**, it demonstrates component-driven UI architecture, controlled forms, browser persistence, bilingual UX, calendar constraints, and responsive design.
+Built with **React, TypeScript, Vite, React Router, CSS Modules, and SweetAlert2**, it demonstrates component-driven UI architecture, controlled forms, browser persistence, bilingual UX, calendar constraints, and responsive design.
 
 > **Portfolio concept, not a production booking platform.** All identities, contact details, opening hours, prices, appointments and customer records are fictional. Login and permissions are client-side simulations. Changes and bookings are only visible inside the same browser profile; there is no server, database, email delivery, real payment processor, or cross-device synchronization. Never use real customer information.
 
@@ -22,9 +22,10 @@ Built with **React, TypeScript, Vite, React Router, and CSS Modules**, it demons
 - Sample sign-in screen at **`/admin/login`** and admin-only demo routes.
 - Day-based booking timeline with available and occupied 30-minute blocks.
 - Appointment list showing client name, phone number, time, service, deposit status and notes.
-- Mark deposits paid or unpaid, cancel or restore bookings (when the time is still available), create manual appointments, or remove records.
-- Edit opening and closing times or mark each weekday as closed.
-- Edit service names and descriptions in both languages, prices, and expected durations; add, move or remove services.
+- Create, reschedule and edit appointments in SweetAlert2 dialogs with availability validation.
+- Confirm deposit changes, cancellation, restoration, and deletion in accessible popups.
+- Edit opening and closing times or mark each weekday as closed using modal forms.
+- Edit service names and descriptions in both languages, prices, and expected durations; add, move or remove services through modal forms.
 - Changes reflect immediately in the same browser's public pricing and availability.
 - Optional demo-data reset, including representative seeded appointments on upcoming weekdays.
 
@@ -79,6 +80,7 @@ src/
 │   ├── Spanish.ts
 │   └── Translations.ts
 ├── lib/
+│   ├── SalonAlerts.ts
 │   └── SalonScheduling.ts
 ├── pages/
 │   ├── AdminDashboard/
@@ -89,11 +91,12 @@ src/
 │   ├── Home/
 │   └── Pricing/
 ├── styles/
+│   └── SalonAlerts.css
 ├── App.tsx
 └── main.tsx
 ```
 
-Components and page directories contain matching PascalCase `.tsx` and `.module.css` files where styling is needed. Styling uses reusable CSS custom properties, scoped classes, four-space indentation and one CSS property per line. Code identifiers and comments are in English; visible copy is localized.
+Components and page directories contain matching PascalCase `.tsx` and `.module.css` files where styling is needed. Styling uses reusable CSS custom properties, scoped classes, four-space indentation and one CSS property per line. Code identifiers and comments are in English; visible copy is localized. Shared SweetAlert2 dialogs use DOM-created form elements and the current theme tokens; destructive actions require confirmation.
 
 ## Production considerations
 

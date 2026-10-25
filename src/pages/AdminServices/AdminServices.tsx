@@ -1,51 +1,82 @@
-import { type ChangeEvent, useState, type FormEvent } from "react";
-
 import { useDisplay } from "../../context/DisplayContext";
 import { useSalon } from "../../context/SalonContext";
+import { type Service, FormatPrice } from "../../data/services";
 import { adminTranslate } from "../../i18n/AdminTranslations";
-import { FormatPrice, type Service } from "../../data/services";
+import { confirmAction, openEditor, showAlert } from "../../lib/SalonAlerts";
 import styles from "./AdminServices.module.css";
 
-type ServiceDraft = {
-    id: string;
-    categoryId: string;
-    nameEs: string;
-    nameEn: string;
-    descriptionEs: string;
-    descriptionEn: string;
-    price: number;
-    duration: number;
-};
-
-function createEmptyDraft(categoryId: string): ServiceDraft {
-    return { id: "", categoryId, nameEs: "", nameEn: "", descriptionEs: "", descriptionEn: "", price: 0, duration: 60 };
-}
-
-// All edits are applied to the shared local browser catalog, never to a remote service.
+// Bilingual service edits are handled in one modal and shared with the public catalog.
 export default function AdminServices() {
     const { database, upsertService, deleteService, resetDemo } = useSalon();
     const { language } = useDisplay();
     const a = (key: Parameters<typeof adminTranslate>[1]) => adminTranslate(language, key);
-    const [draft, setDraft] = useState<ServiceDraft | null>(null);
-    const [message, setMessage] = useState("");
 
-    const edit = (categoryId: string, service: Service) => {
-        setDraft({ id: service.id, categoryId, nameEs: service.name.es, nameEn: service.name.en, descriptionEs: service.description.es, descriptionEn: service.description.en, price: service.price, duration: service.duration });
-        setMessage("");
+    const editService = async (categoryId: string, existing?: Service) => {
+        const values = await openEditor({
+            title: a(existing ? "editService" : "newService"),
+            confirmText: a("saveService"),
+            cancelText: a("discard"),
+            invalidText: a("bookingInvalid"),
+            fields: [
+                {
+                    name: "categoryId", label: a("category"), kind: "select", value: categoryId, wide: true,
+                    options: database.categories.map((category) => ({ value: category.id, label: category.label[language] })),
+                },
+                { name: "nameEs", label: a("serviceNameEs"), value: existing?.name.es ?? "", required: true, maxLength: 100 },
+                { name: "nameEn", label: a("serviceNameEn"), value: existing?.name.en ?? "", required: true, maxLength: 100 },
+                { name: "descriptionEs", label: a("descriptionEs"), kind: "textarea", value: existing?.description.es ?? "", maxLength: 250 },
+                { name: "descriptionEn", label: a("descriptionEn"), kind: "textarea", value: existing?.description.en ?? "", maxLength: 250 },
+                { name: "price", label: a("price"), kind: "number", value: existing?.price ?? 0, min: 0, step: 100, required: true },
+                {
+                    name: "duration", label: a("minutes"), kind: "select", value: existing?.duration ?? 60,
+                    options: [30, 60, 90, 120, 150, 180, 210, 240, 300, 360, 420, 480]
+                        .map((duration) => ({ value: String(duration), label: `${duration} min` })),
+                },
+            ],
+            validate: (draft) => {
+                if (!String(draft.nameEs).trim() || !String(draft.nameEn).trim()) return a("bookingInvalid");
+                if (!Number.isFinite(Number(draft.price)) || Number(draft.price) < 0) return a("bookingInvalid");
+                return null;
+            },
+        });
+
+        if (!values) return;
+        const service: Service = {
+            id: existing?.id ?? crypto.randomUUID(),
+            name: { es: String(values.nameEs).trim(), en: String(values.nameEn).trim() },
+            description: { es: String(values.descriptionEs).trim(), en: String(values.descriptionEn).trim() },
+            price: Number(values.price),
+            duration: Number(values.duration),
+        };
+        upsertService(String(values.categoryId), service);
+        await showAlert(a("serviceSaved"));
     };
 
-    const save = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        if (!draft) return;
-        upsertService(draft.categoryId, {
-            id: draft.id || crypto.randomUUID(),
-            name: { es: draft.nameEs.trim(), en: draft.nameEn.trim() },
-            description: { es: draft.descriptionEs.trim(), en: draft.descriptionEn.trim() },
-            price: draft.price,
-            duration: draft.duration,
+    // Deleting a service does not erase the historical bookings linked to its ID.
+    const removeService = async (categoryId: string, service: Service) => {
+        const accepted = await confirmAction({
+            title: a("deleteService"),
+            text: `${service.name[language]}. ${a("deleteQuestion")}`,
+            confirmText: a("remove"),
+            cancelText: a("discard"),
+            destructive: true,
         });
-        setMessage(a("serviceSaved"));
-        setDraft(null);
+        if (!accepted) return;
+        deleteService(categoryId, service.id);
+        await showAlert(a("saved"));
+    };
+
+    const reset = async () => {
+        const accepted = await confirmAction({
+            title: a("reset"),
+            text: a("resetQuestion"),
+            confirmText: a("reset"),
+            cancelText: a("discard"),
+            destructive: true,
+        });
+        if (!accepted) return;
+        resetDemo();
+        await showAlert(a("saved"));
     };
 
     return (
@@ -58,50 +89,26 @@ export default function AdminServices() {
                 <section key={category.id} className={styles.group}>
                     <div className={styles.groupHeader}>
                         <h2>{category.label[language]}</h2>
-                        <button type="button" onClick={() => { setDraft(createEmptyDraft(category.id)); setMessage(""); }}>{a("newService")} +</button>
+                        <button type="button" onClick={() => void editService(category.id)}>{a("newService")} +</button>
                     </div>
                     {category.services.length ? category.services.map((service) => (
                         <div key={service.id} className={styles.service}>
-                            <div><strong>{service.name[language]}</strong><small>{service.description[language]}</small></div>
+                            <div>
+                                <strong>{service.name[language]}</strong>
+                                <small>{service.description[language]}</small>
+                            </div>
                             <span className={styles.price}>{FormatPrice(service.price, language)}</span>
                             <span className={styles.duration}>{service.duration} min</span>
-                            <button type="button" onClick={() => edit(category.id, service)}>{a("editService")}</button>
-                            <button type="button" className={styles.delete} onClick={() => { if (window.confirm(a("deleteQuestion"))) deleteService(category.id, service.id); }}>{a("deleteService")}</button>
+                            <button type="button" onClick={() => void editService(category.id, service)}>{a("editService")}</button>
+                            <button type="button" className={styles.delete} onClick={() => void removeService(category.id, service)}>{a("deleteService")}</button>
                         </div>
                     )) : <p>{a("noServices")}</p>}
                 </section>
             ))}
 
-            {draft && (
-                <section className={styles.editor}>
-                    <div className={styles.groupHeader}><h2>{a(draft.id ? "editService" : "newService")}</h2><button type="button" onClick={() => setDraft(null)}>×</button></div>
-                    <form onSubmit={save} className={styles.form}>
-                        <label>{a("category")}
-                            <select value={draft.categoryId} onChange={(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setDraft({ ...draft, categoryId: event.target.value })}>
-                                {database.categories.map((category) => <option key={category.id} value={category.id}>{category.label[language]}</option>)}
-                            </select>
-                        </label>
-                        <label>{a("serviceNameEs")}<input required maxLength={100} value={draft.nameEs} onChange={(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setDraft({ ...draft, nameEs: event.target.value })} /></label>
-                        <label>{a("serviceNameEn")}<input required maxLength={100} value={draft.nameEn} onChange={(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setDraft({ ...draft, nameEn: event.target.value })} /></label>
-                        <label>{a("descriptionEs")}<input maxLength={250} value={draft.descriptionEs} onChange={(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setDraft({ ...draft, descriptionEs: event.target.value })} /></label>
-                        <label>{a("descriptionEn")}<input maxLength={250} value={draft.descriptionEn} onChange={(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setDraft({ ...draft, descriptionEn: event.target.value })} /></label>
-                        <label>{a("price")}<input type="number" min={0} step={100} required value={draft.price} onChange={(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setDraft({ ...draft, price: Number(event.target.value) })} /></label>
-                        <label>{a("minutes")}
-                            <select value={draft.duration} onChange={(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setDraft({ ...draft, duration: Number(event.target.value) })}>
-                                {[30, 60, 90, 120, 150, 180, 210, 240, 300, 360, 420, 480].map((minute) => <option key={minute} value={minute}>{minute} min</option>)}
-                            </select>
-                        </label>
-                        <div className={styles.formActions}>
-                            <button type="submit">{a("saveService")}</button>
-                            <button type="button" onClick={() => setDraft(null)}>{a("discard")}</button>
-                        </div>
-                    </form>
-                </section>
-            )}
-            {message && <p className={styles.message} role="status">{message}</p>}
             <div className={styles.reset}>
                 <p>{a("browserOnly")}</p>
-                <button type="button" onClick={() => { if (window.confirm(a("resetQuestion"))) { resetDemo(); setMessage(a("saved")); setDraft(null); } }}>{a("reset")}</button>
+                <button type="button" onClick={() => void reset()}>{a("reset")}</button>
             </div>
         </div>
     );
