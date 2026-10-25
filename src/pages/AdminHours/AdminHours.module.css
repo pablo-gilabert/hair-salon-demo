@@ -1,0 +1,101 @@
+/* Weekly opening-hours editor, with independent controls for all seven days. */
+.page {
+    display: grid;
+    gap: 20px;
+    max-width: 1000px;
+}
+
+.kicker {
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+}
+
+.page h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(38px, 5vw, 60px);
+    font-weight: 500;
+}
+
+.description,
+.note {
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.rows {
+    display: grid;
+    gap: 10px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: minmax(110px, 1fr) minmax(85px, 0.8fr) minmax(125px, 1fr) minmax(125px, 1fr);
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-background);
+}
+
+.row strong {
+    font-size: 13px;
+}
+
+.row label {
+    display: grid;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 11px;
+}
+
+.row input[type="time"] {
+    min-height: 42px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-subtle);
+    background: var(--background);
+    color: var(--text-primary);
+    font: inherit;
+}
+
+.toggle {
+    display: flex !important;
+    align-items: center;
+    gap: 9px !important;
+}
+
+.toggle input {
+    accent-color: var(--gold);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.actions button {
+    padding: 14px 24px;
+    border: 0;
+    background: var(--sand);
+    color: #10191b;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.actions p {
+    font-size: 12px;
+}
+
+@media (max-width: 700px) {
+    .row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

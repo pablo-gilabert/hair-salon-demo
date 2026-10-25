@@ -2,11 +2,14 @@ import { Link } from "react-router";
 
 import BookingForm from "../../components/BookingForm/BookingForm";
 import { useDisplay } from "../../context/DisplayContext";
+import { useSalon } from "../../context/SalonContext";
+import { adminTranslate } from "../../i18n/AdminTranslations";
 import styles from "./Contact.module.css";
 
 // Contact page combines a local-only inquiry form and explicitly fictional business details.
 export default function Contact() {
-    const { t } = useDisplay();
+    const { t, language } = useDisplay();
+    const { database } = useSalon();
 
     return (
         <>
@@ -28,7 +31,7 @@ export default function Contact() {
                 </div>
             </section>
 
-            {/* Contact form: changes remain in component state and never leave the browser. */}
+            {/* Booking form: appointments persist locally but never leave this browser. */}
             <section className={styles.contactMain} id="escribinos">
                 <div className={styles.picturePane}>
                     <img src="/images/hair-golden.webp" alt={t("contact.photoAlt")} loading="lazy" />
@@ -58,7 +61,13 @@ export default function Contact() {
                     <article>
                         <div className={styles.icon} aria-hidden="true">◷</div>
                         <h3>{t("contact.hours")}</h3>
-                        <p>{t("hours.week")}: 09:00 – 20:00<br />{t("hours.sat")}: 09:00 – 18:00</p>
+                        <p>
+                            {([1, 2, 3, 4, 5, 6, 0] as const).map((day) => (
+                                <span key={day}>
+                                    {adminTranslate(language, `weekday${day}`)}: {database.hours[day].isOpen ? `${database.hours[day].start} – ${database.hours[day].end}` : t("hours.closed")}<br />
+                                </span>
+                            ))}
+                        </p>
                         <small>{t("contact.exampleHours")}</small>
                     </article>
                     <article>

@@ -2,13 +2,15 @@ import { useEffect } from "react";
 import { Link, useLocation } from "react-router";
 
 import { useDisplay } from "../../context/DisplayContext";
-import { FormatPrice, ServiceCategories } from "../../data/services";
+import { FormatPrice } from "../../data/services";
+import { useSalon } from "../../context/SalonContext";
 import styles from "./Pricing.module.css";
 
 // The services page is generated from one bilingual catalog with illustrative ARS prices.
 export default function Pricing() {
     const location = useLocation();
     const { language, t } = useDisplay();
+    const { database } = useSalon();
 
     // Scroll to the service category selected from the landing page.
     useEffect(() => {
@@ -55,7 +57,7 @@ export default function Pricing() {
 
             {/* Categories: localized descriptions and stable internal booking identifiers. */}
             <div className={styles.categories}>
-                {ServiceCategories.map((category, index) => (
+                {database.categories.map((category, index) => (
                     <section
                         key={category.id}
                         id={category.id}

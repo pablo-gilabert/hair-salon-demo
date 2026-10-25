@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Link } from "react-router";
 
 import { useDisplay } from "../../context/DisplayContext";
-import { ServiceCategories } from "../../data/services";
+import { useSalon } from "../../context/SalonContext";
+import { adminTranslate } from "../../i18n/AdminTranslations";
 import styles from "./Home.module.css";
 
 // The landing page preserves the original editorial design and image slideshow.
 export default function Home() {
     const [slideIndex, setSlideIndex] = useState(0);
     const { language, t } = useDisplay();
+    const { database } = useSalon();
 
     // Store each slide's image and translation keys instead of embedding localized JSX.
     const slides = [
@@ -114,7 +116,7 @@ export default function Home() {
                     </Link>
                 </div>
                 <div className={styles.serviceGrid}>
-                    {ServiceCategories.map((category, index) => (
+                    {database.categories.map((category, index) => (
                         <article className={styles.serviceCard} key={category.id}>
                             <Link
                                 to={`/precios#${category.id}`}
@@ -162,9 +164,12 @@ export default function Home() {
                     </Link>
                 </div>
                 <dl className={styles.schedule}>
-                    <div><dt>{t("hours.week")}</dt><dd>09:00 – 20:00</dd></div>
-                    <div><dt>{t("hours.sat")}</dt><dd>09:00 – 18:00</dd></div>
-                    <div><dt>{t("hours.sun")}</dt><dd>{t("hours.closed")}</dd></div>
+                    {([1, 2, 3, 4, 5, 6, 0] as const).map((day) => (
+                        <div key={day}>
+                            <dt>{adminTranslate(language, `weekday${day}`)}</dt>
+                            <dd>{database.hours[day].isOpen ? `${database.hours[day].start} – ${database.hours[day].end}` : t("hours.closed")}</dd>
+                        </div>
+                    ))}
                 </dl>
             </section>
 

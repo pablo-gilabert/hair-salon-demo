@@ -1,110 +1,102 @@
-# The Perfect Cut — Hair Salon Website
+# The Perfect Cut — Hair Salon Management Demo
 
-A responsive, bilingual website concept for a modern hair salon and barbershop. Built with React, TypeScript, Vite and CSS Modules, this portfolio project explores editorial layouts, accessible interactions and a reusable, maintainable component architecture.
+A polished, responsive **hair salon and barbershop website with an integrated administration experience**. This portfolio project pairs a customer-facing service catalog and appointment form with a fully interactive, locally persisted admin dashboard.
 
-> **Portfolio demonstration.** The business identity, pricing, schedule and contact details are illustrative. The inquiry form does not transmit or persist personal information, and the website does not include a real booking backend.
+Built with **React, TypeScript, Vite, React Router, and CSS Modules**, it demonstrates component-driven UI architecture, controlled forms, browser persistence, bilingual UX, calendar constraints, and responsive design.
 
-## Features
+> **Portfolio concept, not a production booking platform.** All identities, contact details, opening hours, prices, appointments and customer records are fictional. Login and permissions are client-side simulations. Changes and bookings are only visible inside the same browser profile; there is no server, database, email delivery, real payment processor, or cross-device synchronization. Never use real customer information.
 
-- Three fully responsive pages: Home, Pricing and Contact.
-- Spanish and English interface content, including service descriptions, image alternative text and form feedback.
-- Dark and light appearance with consistent semantic color tokens.
-- Persistent language and theme preferences using `localStorage`.
-- Hero slideshow, service catalog, category deep links and interactive inquiry form.
-- Images optimized as WebP and included in the repository.
-- Client-side navigation using React Router, with Vercel SPA rewrites.
-- Accessible form labels, navigation states, meaningful alt text and reduced-motion support.
+## Experiences
 
-## Technology
+### Public website
 
-| Area | Technology |
-| --- | --- |
-| UI | React, TypeScript |
-| Build tooling | Vite |
-| Routing | React Router |
-| Styling | CSS Modules, CSS custom properties |
-| Internationalization | Typed English/Spanish translation dictionaries |
-| Preferences | `localStorage` (theme and language only) |
-| Deployment | Vercel or another static hosting provider |
+- Responsive editorial homepage and photographic carousel.
+- Original salon artwork and imagery (included under `public/images`).
+- Live service catalog and ARS prices, based on the administrator's locally edited data.
+- Contact and booking form with a selected service, date, available start time, name, phone number, optional email and notes.
+- Availability generated from weekly opening hours, the selected service's duration, and confirmed bookings; overlapping reservations are rejected.
+- Spanish / English interface and dark / light themes, with persistent display preferences.
 
-## Project structure
+### Administrator dashboard
+
+- Sample sign-in screen at **`/admin/login`** and admin-only demo routes.
+- Day-based booking timeline with available and occupied 30-minute blocks.
+- Appointment list showing client name, phone number, time, service, deposit status and notes.
+- Mark deposits paid or unpaid, cancel or restore bookings (when the time is still available), create manual appointments, or remove records.
+- Edit opening and closing times or mark each weekday as closed.
+- Edit service names and descriptions in both languages, prices, and expected durations; add, move or remove services.
+- Changes reflect immediately in the same browser's public pricing and availability.
+- Optional demo-data reset, including representative seeded appointments on upcoming weekdays.
+
+**Demonstration account**
+
+| Field | Value |
+|---|---|
+| Email | `admin@demo.salon` |
+| Password | `Demo2026!` |
+
+The credentials are deliberately displayed on the login page because this is a **frontend demonstration only**. The client can inspect or change the bundled credentials, or alter the session via browser developer tools. It offers **no real access control** and must not be used to protect customer details.
+
+## Data model and storage
+
+The demo uses an in-memory React context backed by `localStorage`:
+
+- `perfect-cut-salon-demo-v1`: versioned salon data including service categories, bilingual service definitions, prices, durations, seven-day business hours, bookings and deposits.
+- `perfect-cut-language` and `perfect-cut-theme`: interface preferences.
+- `perfect-cut-admin-demo-session`: simulated signed-in state in `sessionStorage`.
+
+Service and reservation data is loaded from typed sample data on first visit, then stored locally. Other devices, incognito tabs, different browser profiles, or new users **do not share** that state. Clearing site storage removes edits and bookings. No booking notification or payment processing is performed; a `depositPaid` flag is only a manually edited demonstration status.
+
+### Booking logic
+
+- The selectable window covers the upcoming **21 days**.
+- Availability is split into **30-minute intervals** and bounded by the configured weekday hours.
+- Services have configurable 30–480 minute durations in 30-minute increments.
+- Interval-overlap detection prevents two confirmed appointments from occupying the same time.
+- Cancelled reservations do not block availability; restoration checks for conflicts.
+- Booking records retain the original duration if a service's duration is edited later.
+
+## Code organization
 
 ```text
-public/
-├── flags/                  # SVG flags for the language selector
-└── images/                 # Original WebP imagery
 src/
 ├── components/
+│   ├── AdminShell/
 │   ├── BookingForm/
 │   ├── DisplayControls/
 │   ├── Footer/
 │   └── Navbar/
 ├── context/
-│   └── DisplayContext.tsx  # Shared language/theme state and preferences
+│   ├── DisplayContext.tsx
+│   └── SalonContext.tsx
 ├── data/
-│   └── Services.ts         # Typed catalog with bilingual service records
+│   ├── SalonSeed.ts
+│   ├── SalonTypes.ts
+│   └── services.ts
 ├── i18n/
+│   ├── AdminTranslations.ts
 │   ├── English.ts
 │   ├── Spanish.ts
-│   └── Translations.ts    # Compile-time checked translation keys
+│   └── Translations.ts
+├── lib/
+│   └── SalonScheduling.ts
 ├── pages/
+│   ├── AdminDashboard/
+│   ├── AdminHours/
+│   ├── AdminLogin/
+│   ├── AdminServices/
 │   ├── Contact/
 │   ├── Home/
 │   └── Pricing/
 ├── styles/
-│   └── Global.css          # Reset and semantic theme tokens
 ├── App.tsx
-└── Main.tsx
+└── main.tsx
 ```
 
-Page and component folders pair a PascalCase `.tsx` file with a matching `.module.css` stylesheet. Shared data, state, and locale dictionaries live outside the presentation layer. Code, identifiers and documentation are written in English; visitor-facing content is available in Spanish and English.
+Components and page directories contain matching PascalCase `.tsx` and `.module.css` files where styling is needed. Styling uses reusable CSS custom properties, scoped classes, four-space indentation and one CSS property per line. Code identifiers and comments are in English; visible copy is localized.
 
-## Getting started
+## Production considerations
 
-**Prerequisites:** a recent Node.js release compatible with Vite 8 and npm.
+A real appointment platform requires server-side authentication and authorization, a shared database, input validation, secure handling of customer information, concurrent booking safeguards, privacy controls, operational monitoring, and actual payment reconciliation. The browser-only demo intentionally omits these services.
 
-```bash
-npm install
-npm run dev
-```
-
-Open the local URL printed by Vite. The site defaults to Spanish and dark appearance.
-
-```bash
-npm run typecheck
-npm run build
-npm run preview
-```
-
-`npm install` generates `package-lock.json` if it is not already present. Commit the generated lockfile so your future builds can use `npm ci` deterministically.
-
-## How localization works
-
-The dictionary keys are defined by `src/i18n/Spanish.ts`. `English.ts` implements the same set, checked by TypeScript through `src/i18n/Translations.ts`. Components consume translations via the `useDisplay()` hook. The catalog keeps identifiers and prices language-independent while localizing service names, descriptions and image alternative text.
-
-Changing the language also updates the document's `lang` attribute and route titles. Language and theme preferences are preserved between visits in `localStorage`; form input stays only in React component memory.
-
-## Themes and styling
-
-`src/styles/Global.css` defines semantic tokens for primary text, backgrounds, panels, borders, form colors and the footer. Scoped component styles use those variables rather than duplicating unrelated theme overrides. High-contrast text is retained over photographic hero overlays in both modes.
-
-CSS declarations use four-space indentation and one property per line. Responsive breakpoints remain near the related styles.
-
-## Deployment
-
-The root `vercel.json` configures fallback routing for the client-side SPA. Vercel should detect Vite automatically:
-
-- Build command: `npm run build`
-- Output directory: `dist`
-- Install command: `npm install`
-- Environment variables: none
-
-For deployment details, see [`DEPLOY.md`](./DEPLOY.md).
-
-## Scope and limitations
-
-This is a frontend portfolio demo. The sample prices are illustrative, the address is not a real salon location, and submitting the contact form only displays a local confirmation. A production project would need a real booking platform or backend, appropriate handling of personal data, operational monitoring and deployment configuration suited to a paying client.
-
-## Credits
-
-The visual direction was inspired by the community Figma concept *Hair Salon Web Design*. All information representing the fictional business is included for demonstration purposes.
+**Portfolio status:** fictional brand and content, with independently interactive demo data. No affiliation with an existing salon is implied.

@@ -183,3 +183,37 @@
         padding-inline: 10px;
     }
 }
+
+/* Reservation-specific fields reuse the contact form's existing visual language. */
+.bookingGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    gap: 16px;
+    margin-block: 24px;
+}
+
+.bookingGrid label {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.bookingGrid select {
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    padding: 10px;
+    border: 1px solid var(--panel-border);
+    border-radius: 2px;
+    background: var(--panel-background);
+    color: var(--panel-text);
+    font: inherit;
+}
+
+.submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}

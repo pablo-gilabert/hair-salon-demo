@@ -1,0 +1,176 @@
+/* Service list and bilingual editor reflect the same catalog used by the public pages. */
+.page {
+    display: grid;
+    gap: 22px;
+}
+
+.kicker {
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+}
+
+.page h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(38px, 5vw, 60px);
+    font-weight: 500;
+}
+
+.description {
+    margin-top: 0;
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.group,
+.editor {
+    padding: clamp(16px, 2.5vw, 28px);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-background);
+}
+
+.groupHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.groupHeader h2 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.groupHeader button,
+.service button,
+.formActions button,
+.reset button {
+    min-height: 40px;
+    padding: 10px 14px;
+    border: 1px solid var(--border-subtle);
+    background: var(--hover-surface);
+    color: var(--text-primary);
+    cursor: pointer;
+    font: inherit;
+    font-size: 11px;
+}
+
+.service {
+    display: grid;
+    grid-template-columns: minmax(140px, 2fr) minmax(80px, 1fr) 90px auto auto;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.service strong {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 13px;
+}
+
+.service small {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.price {
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.duration {
+    font-size: 11px;
+}
+
+.service .delete,
+.reset button {
+    border-color: #ad746c;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.form label {
+    display: grid;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 11px;
+}
+
+.form input,
+.form select {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px;
+    border: 1px solid var(--border-subtle);
+    background: var(--background);
+    color: var(--text-primary);
+    font: inherit;
+}
+
+.formActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    grid-column: 1 / -1;
+}
+
+.formActions button:first-child {
+    border-color: var(--sand);
+    background: var(--sand);
+    color: #10191b;
+    font-weight: 700;
+}
+
+.reset {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 14px;
+    padding: 22px 0;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.reset p,
+.message {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+@media (max-width: 1050px) {
+    .service {
+        grid-template-columns: minmax(160px, 1fr) repeat(2, auto);
+    }
+
+    .service button {
+        justify-self: start;
+    }
+}
+
+@media (max-width: 560px) {
+    .service,
+    .form {
+        grid-template-columns: 1fr;
+    }
+
+    .formActions {
+        grid-column: auto;
+    }
+}
