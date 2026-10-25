@@ -1,25 +1,253 @@
-.header { position: absolute; top: 0; left: 0; right: 0; z-index: 40; padding: clamp(25px,3vw,45px) var(--page-pad); }
-.inner { display:flex; align-items:center; justify-content:space-between; max-width:1710px; margin-inline:auto; gap:36px; }
-.logo { display:inline-flex; align-items:center; flex:none; gap:5px; height:38px; font-size:clamp(11px,.92vw,16px); font-weight:600; letter-spacing:.2em; color:#fff; white-space:nowrap; position:relative; }
-.logoWord { display:grid; place-items:center; align-self:stretch; padding:0 6px; margin-right:-5px; border:1px solid #fff; }
-.navigation { display:flex; align-items:center; gap:clamp(24px,3vw,52px); }
-.navLink { position:relative; color:#fff; text-transform:uppercase; font-weight:600; font-size:clamp(10px,.8vw,13px); letter-spacing:.19em; padding:10px 0; transition:color .2s; }
-.navLink::after { position:absolute; bottom:4px; height:1px; background:var(--gold); width:0; content:''; left:0; transition:width .22s; }
-.navLink:hover,.active { color:#f6e5d5; }
-.navLink:hover::after,.active::after { width:100%; }
-.menuButton { display:none; }
-.mobileBooking { display:none; }
-@media(max-width:780px) {
- .header { padding:22px var(--page-pad); }
- .logo { font-size:11px; letter-spacing:.16em; height:34px; }
- .menuButton { width:42px; height:42px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:6px; background:transparent; border:0; position:relative; z-index:43; }
- .menuButton span { display:block; height:1.5px; width:27px; background:#fff; transition:transform .25s,opacity .25s; }
- .menuButtonActive span:first-child { transform:translateY(7.5px) rotate(45deg); }
- .menuButtonActive span:nth-child(2) { opacity:0; }
- .menuButtonActive span:last-child { transform:translateY(-7.5px) rotate(-45deg); }
- .navigation { position:absolute; inset:0 0 auto; padding:100px var(--page-pad) 40px; background:rgba(8,14,17,.98); display:flex; flex-direction:column; align-items:stretch; gap:12px; box-shadow:0 20px 35px rgba(0,0,0,.15); visibility:hidden; opacity:0; transform:translateY(-10px); pointer-events:none; transition:opacity .25s,transform .25s,visibility .25s; }
- .open { opacity:1; visibility:visible; transform:translateY(0); pointer-events:auto; }
- .navLink { font-size:14px; letter-spacing:.2em; padding:16px 0; border-bottom:1px solid #283033; }
- .navLink::after { display:none; }
- .mobileBooking { display:flex; align-items:center; justify-content:space-between; background:var(--sand); padding:17px 20px; color:#fff; font-size:12px; letter-spacing:.12em; text-transform:uppercase; font-weight:600; margin-top:12px; }
+/* Header layout: align the wordmark, navigation and preferences without clipping. */
+.header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 40;
+    padding: clamp(24px, 3vw, 45px) var(--page-pad);
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    max-width: 1710px;
+    gap: clamp(16px, 2vw, 28px);
+    margin-inline: auto;
+}
+
+/* The wordmark stays on the photograph; navigation text uses the active theme. */
+.logo {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    height: 38px;
+    gap: 5px;
+    color: #ffffff;
+    font-size: clamp(11px, 0.92vw, 16px);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    white-space: nowrap;
+    z-index: 43;
+    text-shadow: 0 1px 8px rgb(0 0 0 / 35%);
+}
+
+.logoWord {
+    display: grid;
+    place-items: center;
+    align-self: stretch;
+    padding-inline: 6px;
+    margin-right: -5px;
+    border: 1px solid currentColor;
+}
+
+.contactHeader .logo {
+    color: var(--contact-brand-text);
+}
+
+.navigation {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    gap: clamp(13px, 1.6vw, 25px);
+    margin-left: auto;
+    color: var(--nav-text);
+}
+
+.navLink {
+    position: relative;
+    display: inline-block;
+    padding: 10px 0;
+    color: var(--nav-text);
+    font-size: clamp(10px, 0.78vw, 12px);
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+
+.navLink::after {
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    content: "";
+    transition: width 0.22s;
+}
+
+.navLink:hover,
+.active {
+    color: var(--nav-hover);
+}
+
+.navLink:hover::after,
+.active::after {
+    width: 100%;
+}
+
+/* Preference buttons never shrink or push Spanish labels outside the viewport. */
+.actions {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    order: 3;
+    align-items: center;
+    gap: 8px;
+    z-index: 43;
+}
+
+.menuButton,
+.mobileBooking {
+    display: none;
+}
+
+/* On intermediate widths, the full menu becomes a dropdown before links collide. */
+@media (max-width: 1180px) {
+    .header {
+        padding: 22px var(--page-pad);
+    }
+
+    .logo {
+        height: 34px;
+        font-size: 11px;
+        letter-spacing: 0.13em;
+    }
+
+    .actions {
+        margin-left: auto;
+    }
+
+    .menuButton {
+        position: relative;
+        display: flex;
+        flex: 0 0 auto;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        gap: 6px;
+        border: 0;
+        background: transparent;
+    }
+
+    .menuButton span {
+        display: block;
+        width: 27px;
+        height: 1.5px;
+        background: #ffffff;
+        transition: transform 0.25s, opacity 0.25s;
+    }
+
+    .contactHeader .menuButton span {
+        background: var(--contact-brand-text);
+    }
+
+    .menuButtonActive span:first-child {
+        transform: translateY(7.5px) rotate(45deg);
+    }
+
+    .menuButtonActive span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menuButtonActive span:last-child {
+        transform: translateY(-7.5px) rotate(-45deg);
+    }
+
+    .navigation {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 103px var(--page-pad) 40px;
+        margin-left: 0;
+        background: var(--nav-menu-background);
+        box-shadow: 0 20px 35px rgb(0 0 0 / 15%);
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+        transition: opacity 0.25s, transform 0.25s, visibility 0.25s;
+        z-index: 42;
+    }
+
+    .open {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .navLink {
+        padding: 16px 0;
+        border-bottom: 1px solid var(--nav-menu-border);
+        font-size: 14px;
+        letter-spacing: 0.14em;
+    }
+
+    .navLink::after {
+        display: none;
+    }
+
+    .mobileBooking {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 17px 20px;
+        margin-top: 12px;
+        background: var(--sand);
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    /* When the dropdown opens, its light background also changes the logo and toggle. */
+    .menuExpanded .logo {
+        color: var(--nav-text);
+        text-shadow: none;
+    }
+
+    .menuExpanded .menuButton span,
+    .menuExpanded.contactHeader .menuButton span {
+        background: var(--nav-text);
+    }
+}
+
+@media (max-width: 440px) {
+    .inner {
+        gap: 6px;
+    }
+
+    .logo {
+        font-size: 9px;
+        letter-spacing: 0.07em;
+    }
+
+    .logoWord {
+        padding-inline: 3px;
+    }
+
+    .actions {
+        gap: 3px;
+    }
+
+    .menuButton {
+        width: 32px;
+        height: 34px;
+    }
+
+    .menuButton span {
+        width: 21px;
+    }
 }

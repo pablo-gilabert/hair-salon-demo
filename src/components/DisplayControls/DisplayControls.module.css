@@ -1,0 +1,114 @@
+/* DisplayControls styles: responsive layout and component-specific presentation. */
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.languageWrapper {
+    position: relative;
+}
+
+.languageButton,
+.languageOption,
+.themeButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 36px;
+    border: 1px solid var(--control-border);
+    background: var(--control-background);
+    color: var(--control-text);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.languageButton {
+    padding: 7px 10px;
+}
+
+.flag {
+    width: 22px;
+    height: 15px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.chevron {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.languageMenu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 100;
+    min-width: 100%;
+    border: 1px solid var(--control-border);
+    background: var(--control-menu);
+    box-shadow: 0 12px 24px rgb(0 0 0 / 18%);
+}
+
+.languageOption {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 10px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.languageOption:hover,
+.languageOption[aria-selected="true"] {
+    background: var(--control-hover);
+}
+
+.themeButton {
+    padding: 7px 10px;
+}
+
+.themeIcon {
+    flex: none;
+}
+
+.switchTrack {
+    width: 27px;
+    height: 15px;
+    border-radius: 20px;
+    background: var(--switch-track);
+    padding: 2px;
+}
+
+.switchThumb {
+    display: block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--switch-thumb);
+    transform: translateX(0);
+    transition: transform 0.2s ease;
+}
+
+.themeButton[aria-pressed="true"] .switchThumb {
+    transform: translateX(12px);
+}
+
+@media (max-width: 410px) {
+    .controls {
+        gap: 5px;
+    }
+
+    .languageButton {
+        padding-inline: 6px;
+    }
+
+    .themeButton {
+        padding-inline: 7px;
+    }
+}

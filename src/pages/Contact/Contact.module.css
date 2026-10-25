@@ -1,0 +1,320 @@
+/* Contact styles: responsive layout and component-specific presentation. */
+
+/* Contact hero highlights the route to the inquiry form. */
+.hero {
+    min-height: clamp(570px,67vh,780px);
+    background: var(--hero-background);
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    color: var(--hero-heading);
+}
+
+.heroImage {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 55%;
+    filter: var(--contact-hero-image-filter);
+}
+
+.heroOverlay {
+    position: absolute;
+    inset: 0;
+    background: var(--contact-hero-overlay);
+}
+
+.heroContent {
+    position: relative;
+    padding: 155px var(--page-pad) 85px;
+    max-width: 1050px;
+}
+
+.eyebrow {
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .28em;
+}
+
+.hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(67px,7.5vw,133px);
+    font-weight: 500;
+    letter-spacing: -.04em;
+    line-height: .84;
+    margin-top: 32px;
+}
+
+.hero h1 em {
+    font-weight: 400;
+}
+
+.heroContent>p:not(.eyebrow) {
+    max-width: 480px;
+    color: var(--hero-muted);
+    font-size: 14px;
+    line-height: 1.95;
+    margin-top: 31px;
+}
+
+.heroLink {
+    display: inline-flex;
+    gap: 28px;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: .19em;
+    font-weight: 700;
+    margin-top: 35px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--gold);
+}
+
+.heroLink span {
+    font-size: 17px;
+    color: var(--gold);
+}
+
+/* The form and illustration share a split responsive layout. */
+.contactMain {
+    display: grid;
+    grid-template-columns: 48% 52%;
+    background: var(--panel-background);
+}
+
+.picturePane {
+    position: relative;
+    min-height: 800px;
+    overflow: hidden;
+    background: var(--card-background);
+}
+
+.picturePane>img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: var(--contact-photo-filter);
+}
+
+.picturePane::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    background: var(--contact-photo-shade);
+}
+
+.pictureQuote {
+    position: absolute;
+    z-index: 1;
+    left: 10%;
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--contact-photo-caption);
+    backdrop-filter: blur(12px);
+    padding: clamp(30px,4vw,70px);
+    text-align: center;
+
+    color: var(--contact-photo-caption-text);
+}
+
+.pictureQuote h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    line-height: 1;
+    font-size: clamp(43px,4.2vw,74px);
+    margin-top: 20px;
+}
+
+.pictureQuote>p:last-child {
+    color: var(--contact-photo-caption-muted);
+    font-size: 13px;
+    line-height: 1.8;
+    margin-top: 20px;
+}
+
+/* Illustrative location, hours and contact details are displayed as cards. */
+.information {
+    padding: clamp(95px,9vw,155px) var(--page-pad);
+    background: var(--surface-background);
+}
+
+.informationTitle {
+    max-width: 660px;
+    margin-bottom: 55px;
+}
+
+.information h2,
+.cta h2 {
+    font-family: var(--serif);
+    font-size: clamp(48px,5vw,86px);
+    font-weight: 500;
+    line-height: .96;
+    margin-top: 22px;
+}
+
+.informationTitle>p:last-child {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--text-secondary);
+    margin-top: 21px;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: clamp(18px,3vw,50px);
+}
+
+.infoGrid article {
+    padding: 37px 10px 25px 0;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.icon {
+    color: var(--gold);
+    font-size: 39px;
+    font-family: Georgia,serif;
+    margin-bottom: 25px;
+}
+
+.infoGrid h3 {
+    font-size: 12px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.infoGrid p {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--text-secondary);
+    min-height: 55px;
+}
+
+.infoGrid small {
+    display: block;
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: .04em;
+    margin-top: 20px;
+}
+
+/* The final call-to-action returns visitors to the service catalog. */
+.cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    background: var(--panel-background);
+    color: var(--panel-text);
+    padding: 90px var(--page-pad);
+}
+
+.cta h2 {
+    margin-top: 13px;
+    max-width: 750px;
+    font-size: clamp(45px,4.3vw,72px);
+}
+
+.cta a {
+    display: inline-flex;
+    gap: 26px;
+    align-items: center;
+    flex: none;
+    padding: 18px 23px;
+    color: white;
+    background: #0f181b;
+    text-transform: uppercase;
+    letter-spacing: .11em;
+    font-weight: 700;
+    font-size: 11px;
+}
+
+@media (max-width:850px) {
+    .contactMain {
+        grid-template-columns: 1fr;
+    }
+
+    .picturePane {
+        min-height: 410px;
+    }
+
+    .pictureQuote {
+        padding: 30px;
+        max-width: 450px;
+        left: 50%;
+        width: 85%;
+        transform: translate(-50%,-50%);
+    }
+
+    .pictureQuote h2 {
+        font-size: 52px;
+    }
+}
+
+@media (max-width:650px) {
+    .hero {
+        min-height: 650px;
+    }
+
+    .heroContent {
+        padding: 185px var(--page-pad) 75px;
+        align-self: end;
+    }
+
+    .hero h1 {
+        font-size: clamp(67px,13vw,87px);
+    }
+
+    .infoGrid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .infoGrid article {
+        padding-top: 23px;
+    }
+
+    .infoGrid p {
+        min-height: auto;
+    }
+
+    .information {
+        padding-block: 85px;
+    }
+
+    .cta {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-block: 72px;
+        gap: 30px;
+    }
+
+    .picturePane {
+        min-height: 340px;
+    }
+
+    .pictureQuote h2 {
+        font-size: 43px;
+    }
+}
+
+/* Photo heroes retain a dark overlay and high-contrast light text in both themes. */
+
+
+
+
+
+/* Accent colors over photographic heroes stay legible in both themes. */
+.hero .eyebrow {
+    color: var(--hero-accent);
+}

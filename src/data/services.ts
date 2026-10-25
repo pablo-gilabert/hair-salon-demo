@@ -1,64 +1,76 @@
+import type { Language } from "../i18n/Translations";
+
+// Service information is modeled once, with localized display content and shared prices.
+type LocalizedText = Record<Language, string>;
+
 export type Service = {
-  name: string;
-  description: string;
-  price: number;
+    id: string;
+    name: LocalizedText;
+    description: LocalizedText;
+    price: number;
 };
 
 export type ServiceCategory = {
-  id: string;
-  label: string;
-  intro: string;
-  image: string;
-  imageAlt: string;
-  services: Service[];
+    id: string;
+    bookingValue: string;
+    label: LocalizedText;
+    intro: LocalizedText;
+    image: string;
+    imageAlt: LocalizedText;
+    services: Service[];
 };
 
-export const serviceCategories: ServiceCategory[] = [
-  {
-    id: "cortes",
-    label: "Cortes & peinados",
-    intro: "Para cada estilo, una forma de hacerlo único.",
-    image: "/images/cut-mens.webp",
-    imageAlt: "Corte masculino moderno con degradado",
-    services: [
-      { name: "Corte clásico", description: "Asesoramiento, corte y terminación", price: 8000 },
-      { name: "Corte + lavado", description: "Lavado relajante y corte personalizado", price: 9500 },
-      { name: "Corte infantil", description: "Hasta 12 años", price: 7000 },
-      { name: "Perfilado de barba", description: "Definición y acabado", price: 5000 },
-      { name: "Brushing & ondas", description: "Peinado para cualquier ocasión", price: 9000 },
-    ],
-  },
-  {
-    id: "coloracion",
-    label: "Coloración",
-    intro: "Matices que iluminan y expresan tu personalidad.",
-    image: "/images/hair-color.webp",
-    imageAlt: "Cabello largo con balayage y ondas doradas",
-    services: [
-      { name: "Color completo", description: "Tono uniforme de raíz a puntas", price: 18000 },
-      { name: "Reflejos", description: "Luz y profundidad", price: 20000 },
-      { name: "Balayage", description: "Degradado natural hecho a medida", price: 22000 },
-      { name: "Matización", description: "Revitalizá el tono", price: 12000 },
-    ],
-  },
-  {
-    id: "tratamientos",
-    label: "Tratamientos",
-    intro: "Un ritual de cuidado para un cabello saludable.",
-    image: "/images/hair-treatment.webp",
-    imageAlt: "Tratamiento capilar en bacha de peluquería",
-    services: [
-      { name: "Hidratación profunda", description: "Nutrición y brillo", price: 10000 },
-      { name: "Reconstrucción capilar", description: "Fortaleza y suavidad", price: 12000 },
-      { name: "Botox capilar", description: "Control del frizz", price: 15000 },
-      { name: "Alisado progresivo", description: "Acabado liso de larga duración", price: 18000 },
-    ],
-  },
+export const ServiceCategories: ServiceCategory[] = [
+    {
+        id: "cortes",
+        bookingValue: "cut",
+        label: { es: "Cortes & peinados", en: "Haircuts & styling" },
+        intro: { es: "Para cada estilo, una forma de hacerlo único.", en: "Every style deserves a personal touch." },
+        image: "/images/cut-mens.webp",
+        imageAlt: { es: "Corte masculino moderno con degradado", en: "Modern men's fade haircut" },
+        services: [
+            { id: "classic-cut", name: { es: "Corte clásico", en: "Classic haircut" }, description: { es: "Asesoramiento, corte y terminación", en: "Consultation, haircut and finishing" }, price: 8000 },
+            { id: "wash-cut", name: { es: "Corte + lavado", en: "Haircut + wash" }, description: { es: "Lavado relajante y corte personalizado", en: "Relaxing wash and personalized haircut" }, price: 9500 },
+            { id: "child-cut", name: { es: "Corte infantil", en: "Children's haircut" }, description: { es: "Hasta 12 años", en: "Up to 12 years old" }, price: 7000 },
+            { id: "beard", name: { es: "Perfilado de barba", en: "Beard shaping" }, description: { es: "Definición y acabado", en: "Shaping and finishing" }, price: 5000 },
+            { id: "waves", name: { es: "Brushing & ondas", en: "Blowout & waves" }, description: { es: "Peinado para cualquier ocasión", en: "Styling for any occasion" }, price: 9000 },
+        ],
+    },
+    {
+        id: "coloracion",
+        bookingValue: "color",
+        label: { es: "Coloración", en: "Hair color" },
+        intro: { es: "Matices que iluminan y expresan tu personalidad.", en: "Shades that brighten and express your personality." },
+        image: "/images/hair-color.webp",
+        imageAlt: { es: "Cabello largo con balayage y ondas doradas", en: "Long balayage hair with golden waves" },
+        services: [
+            { id: "full-color", name: { es: "Color completo", en: "Full color" }, description: { es: "Tono uniforme de raíz a puntas", en: "Even color from roots to ends" }, price: 18000 },
+            { id: "highlights", name: { es: "Reflejos", en: "Highlights" }, description: { es: "Luz y profundidad", en: "Light and dimension" }, price: 20000 },
+            { id: "balayage", name: { es: "Balayage", en: "Balayage" }, description: { es: "Degradado natural hecho a medida", en: "Custom natural-looking color blend" }, price: 22000 },
+            { id: "toning", name: { es: "Matización", en: "Hair toning" }, description: { es: "Revitalizá el tono", en: "Refresh your shade" }, price: 12000 },
+        ],
+    },
+    {
+        id: "tratamientos",
+        bookingValue: "treatment",
+        label: { es: "Tratamientos", en: "Treatments" },
+        intro: { es: "Un ritual de cuidado para un cabello saludable.", en: "A nourishing ritual for healthy hair." },
+        image: "/images/hair-treatment.webp",
+        imageAlt: { es: "Tratamiento capilar en bacha de peluquería", en: "Hair treatment at a salon wash station" },
+        services: [
+            { id: "hydration", name: { es: "Hidratación profunda", en: "Deep hydration" }, description: { es: "Nutrición y brillo", en: "Nourishment and shine" }, price: 10000 },
+            { id: "repair", name: { es: "Reconstrucción capilar", en: "Hair repair" }, description: { es: "Fortaleza y suavidad", en: "Strength and softness" }, price: 12000 },
+            { id: "botox", name: { es: "Botox capilar", en: "Hair botox treatment" }, description: { es: "Control del frizz", en: "Frizz control" }, price: 15000 },
+            { id: "straightening", name: { es: "Alisado progresivo", en: "Progressive straightening" }, description: { es: "Acabado liso de larga duración", en: "Long-lasting smooth finish" }, price: 18000 },
+        ],
+    },
 ];
 
-export const formatPrice = (price: number) =>
-  new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-    maximumFractionDigits: 0,
-  }).format(price);
+// All prices are illustrative; retain the source currency for both interface languages.
+export function FormatPrice(price: number, language: Language): string {
+    return new Intl.NumberFormat(language === "es" ? "es-AR" : "en-US", {
+        style: "currency",
+        currency: "ARS",
+        maximumFractionDigits: 0,
+    }).format(price);
+}

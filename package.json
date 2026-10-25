@@ -1,25 +1,28 @@
 {
-  "name": "peluqueria-demo",
-  "private": true,
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "typecheck": "tsc -b --pretty"
-  },
-  "dependencies": {
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "react-router": "^7.9.0"
-  },
-  "devDependencies": {
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
-    "@types/node": "^24.13.3",
-    "@vitejs/plugin-react": "^6.1.1",
-    "typescript": "~6.0.2",
-    "vite": "^8.3.0"
-  }
+    "name": "hair-salon-demo",
+    "private": true,
+    "version": "2.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc -b && vite build",
+        "preview": "vite preview",
+        "typecheck": "tsc -b --pretty"
+    },
+    "dependencies": {
+        "react": "^19.2.8",
+        "react-dom": "^19.2.8",
+        "react-router": "^7.9.0"
+    },
+    "devDependencies": {
+        "@types/react": "^19.2.18",
+        "@types/react-dom": "^19.2.7",
+        "@types/node": "^24.13.3",
+        "@vitejs/plugin-react": "^6.1.1",
+        "typescript": "~6.0.2",
+        "vite": "^8.3.0"
+    },
+    "engines": {
+        "node": ">=22.12.0"
+    }
 }

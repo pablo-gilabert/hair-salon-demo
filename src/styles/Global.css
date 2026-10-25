@@ -1,0 +1,206 @@
+/* Global reset, design tokens and theme-specific semantic colors. */
+:root {
+    color-scheme: dark;
+    --page-pad: clamp(20px, 5.2vw, 108px);
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans: "Montserrat", Arial, sans-serif;
+    --gold: #c19a5d;
+    --sand: #b58e71;
+    --background: #080e11;
+    --surface-background: #10191b;
+    --card-background: #172123;
+    --text-primary: #ffffff;
+    --text-secondary: #b7bebd;
+    --border-subtle: #414a4b;
+    --hover-surface: #273033;
+    --panel-background: #f3ede7;
+    --cream: var(--panel-background);
+    --panel-text: #10191b;
+    --panel-muted: #565a58;
+    --panel-border: #a9a198;
+    --quote-background: #57483f;
+    --quote-text: #ffffff;
+    --price-text: #e2c3a7;
+    --form-field-text: #11191b;
+    --control-background: rgb(9 15 17 / 78%);
+    --control-border: rgb(255 255 255 / 35%);
+    --control-text: #ffffff;
+    --control-menu: #121b1d;
+    --control-hover: #354143;
+    --switch-track: #9d806b;
+    --switch-thumb: #ffffff;
+    --footer-background: #040809;
+    --footer-text: #ffffff;
+    --footer-muted: #aeb5b5;
+    --footer-border: #273033;
+
+    /* Hero tokens control every first-screen section without changing its artwork. */
+    --hero-background: #0b1113;
+    --hero-heading: #ffffff;
+    --hero-muted: #cdd1ce;
+    --hero-accent: #d7b58b;
+    --hero-divider: rgb(255 255 255 / 85%);
+    --hero-panel-gradient: linear-gradient(135deg, rgb(18 27 29 / 94%), rgb(49 55 54 / 94%));
+    --hero-image-fade: rgb(5 10 12 / 85%);
+    --hero-panel-photo-opacity: 0.16;
+    --home-mobile-overlay: linear-gradient(to bottom, rgb(3 8 9 / 35%), rgb(4 9 11 / 55%) 35%, rgb(4 9 11 / 98%) 86%);
+    --pricing-mobile-overlay: linear-gradient(0deg, rgb(7 13 15 / 94%) 0%, rgb(7 13 15 / 75%) 52%, rgb(7 13 15 / 27%) 100%);
+    --contact-hero-overlay: linear-gradient(90deg, rgb(7 13 15 / 90%), rgb(7 13 15 / 44%) 65%, rgb(7 13 15 / 33%));
+    --contact-hero-image-filter: brightness(0.55);
+    --contact-photo-filter: grayscale(100%) brightness(0.6);
+    --contact-photo-shade: linear-gradient(180deg, rgb(0 0 0 / 20%), rgb(0 0 0 / 60%));
+    --contact-photo-caption: rgb(8 13 15 / 75%);
+    --contact-photo-caption-text: #ffffff;
+    --contact-photo-caption-muted: #bfc8c7;
+
+    /* Header logo remains readable on photographs; navigation follows the hero panel. */
+    --nav-text: #ffffff;
+    --nav-hover: #f6e5d5;
+    --nav-menu-background: rgb(8 14 17 / 98%);
+    --nav-menu-border: #283033;
+    --contact-brand-text: #ffffff;
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+    --gold: #835633;
+    --sand: #a67f61;
+    --background: #f9f6f1;
+    --surface-background: #f1ece5;
+    --card-background: #e4ded7;
+    --text-primary: #172225;
+    --text-secondary: #4b5858;
+    --border-subtle: #a9aba7;
+    --hover-surface: #e3dad1;
+    --panel-background: #ffffff;
+    --panel-text: #192325;
+    --panel-muted: #56605d;
+    --panel-border: #c3bcb3;
+    --quote-background: #dac5b2;
+    --quote-text: #172225;
+    --price-text: #76502f;
+    --form-field-text: #172225;
+    --footer-background: #eae2d9;
+    --footer-text: #172225;
+    --footer-muted: #455153;
+    --footer-border: #b6aca2;
+
+    /* Light mode also reaches photographic heroes, not just the lower sections. */
+    --hero-background: #f3eee7;
+    --hero-heading: #172225;
+    --hero-muted: #4b5858;
+    --hero-accent: #835633;
+    --hero-divider: rgb(23 34 37 / 45%);
+    --hero-panel-gradient: linear-gradient(135deg, rgb(251 248 243 / 97%), rgb(230 222 211 / 95%));
+    --hero-image-fade: rgb(243 238 231 / 95%);
+    --hero-panel-photo-opacity: 0.055;
+    --home-mobile-overlay: linear-gradient(to bottom, rgb(7 13 15 / 25%), rgb(243 238 231 / 75%) 35%, rgb(243 238 231 / 98%) 65%);
+    --pricing-mobile-overlay: linear-gradient(0deg, rgb(243 238 231 / 99%) 0%, rgb(243 238 231 / 93%) 52%, rgb(243 238 231 / 16%) 100%);
+    --contact-hero-overlay: linear-gradient(90deg, rgb(249 246 241 / 96%), rgb(249 246 241 / 84%) 65%, rgb(249 246 241 / 54%));
+    --contact-hero-image-filter: brightness(1.04) saturate(0.85);
+    --contact-photo-filter: grayscale(65%) brightness(0.94);
+    --contact-photo-shade: linear-gradient(180deg, rgb(249 246 241 / 8%), rgb(249 246 241 / 42%));
+    --contact-photo-caption: rgb(249 246 241 / 91%);
+    --contact-photo-caption-text: #172225;
+    --contact-photo-caption-muted: #4b5858;
+
+    --nav-text: #172225;
+    --nav-hover: #78512d;
+    --nav-menu-background: rgb(249 246 241 / 98%);
+    --nav-menu-border: #c9bdb1;
+    --contact-brand-text: #172225;
+
+    /* Display controls follow the light palette instead of retaining dark boxes. */
+    --control-background: rgb(255 255 255 / 88%);
+    --control-border: rgb(30 42 43 / 32%);
+    --control-text: #172225;
+    --control-menu: #fffdfa;
+    --control-hover: #eee7dd;
+    --switch-track: #b99b80;
+}
+
+/* Normalize browser defaults without interfering with scoped CSS Modules. */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+body {
+    min-width: 320px;
+    background: var(--background);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+img,
+svg,
+video,
+picture {
+    display: block;
+    max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+textarea {
+    resize: vertical;
+}
+
+:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 4px;
+}
+
+::selection {
+    background: var(--sand);
+    color: #ffffff;
+}
+
+#root {
+    min-height: 100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
